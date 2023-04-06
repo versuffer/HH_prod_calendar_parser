@@ -2,6 +2,7 @@
 This script parses production calendar from HeadHunter (hh.ru/calendar)
 
 ## Output example
+```json
 {datetime.date(2023, 1, 1): 'Выходной',
  datetime.date(2023, 1, 2): 'Выходной',
  datetime.date(2023, 1, 3): 'Выходной',
@@ -17,3 +18,4 @@ This script parses production calendar from HeadHunter (hh.ru/calendar)
  datetime.date(2023, 2, 24): 'Выходной',
  ...
  }
+```
