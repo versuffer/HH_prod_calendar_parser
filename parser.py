@@ -58,3 +58,4 @@ def get_prod_calendar():
                     {date(year=year, month=index, day=day_number): "Сокращённый день"}
                 )
                 continue
+    return result
