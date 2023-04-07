@@ -23,7 +23,9 @@ def get_prod_calendar_dict():
         result = dict()
         for index, month in enumerate(months, 1):
             for day in month:
-                result.update({date(year=year, month=index, day=day): "Рабочий день"})
+                result.update(
+                    {date(year=year, month=index, day=day).isoformat(): "Рабочий день"}
+                )
         return result
 
     # Get raw html
@@ -68,15 +70,23 @@ def get_prod_calendar_dict():
     for index, month in enumerate(months, start=1):
         for day in month:
             day = day.__str__()
-            day_number = int(re.search(r"\d{1,2}", day).group(0))
+            day_number = int(re.findall(r"\d{1,2}", day)[0])
             if re.search("calendar-list__numbers__item_day-off", day) is not None:
                 result.update(
-                    {date(year=year, month=index, day=day_number): "Выходной"}
+                    {
+                        date(
+                            year=year, month=index, day=day_number
+                        ).isoformat(): "Выходной"
+                    }
                 )
                 continue
             if re.search("calendar-list__numbers__item_shortened", day) is not None:
                 result.update(
-                    {date(year=year, month=index, day=day_number): "Сокращённый день"}
+                    {
+                        date(
+                            year=year, month=index, day=day_number
+                        ).isoformat(): "Сокращённый день"
+                    }
                 )
                 continue
     return result
