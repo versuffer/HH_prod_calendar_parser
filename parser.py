@@ -69,7 +69,7 @@ def get_prod_calendar_dict():
     for index, month in enumerate(months, start=1):
         for day in month:
             day = day.__str__()
-            day_number = int(re.findall(r"\d{1,2}", day)[0])
+            day_number = int(re.search(r"\d{1,2}", day)[0])
             if re.search("calendar-list__numbers__item_day-off", day) is not None:
                 result.update(
                     {
