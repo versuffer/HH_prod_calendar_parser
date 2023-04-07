@@ -1,13 +1,30 @@
+import calendar
+import itertools
 import re
 from datetime import date
+from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
 
-def get_prod_calendar():
+def get_prod_calendar_dict():
     """This function gets production calendar from HeadHunter (07.04.2023)"""
+
+    def get_raw_calendar_dict(year):
+        raw_data = calendar.Calendar().yeardayscalendar(year)
+        raw_data = list(itertools.chain(*raw_data))
+
+        months = [
+            list(filter(lambda num: num != 0, itertools.chain(*month)))
+            for month in raw_data
+        ]
+        result = dict()
+        for index, month in enumerate(months, 1):
+            for day in month:
+                result.update({date(year=year, month=index, day=day): "Рабочий день"})
+        return result
 
     # Get raw html
     url = "https://hh.ru/calendar"
@@ -34,16 +51,20 @@ def get_prod_calendar():
             elem.decompose()
 
     # Leave only shortened days and days-off
-    for index, month in enumerate(months):
-        months[index] = month.find_all(
+    months = [
+        month.find_all(
             class_=[
                 "calendar-list__numbers__item_day-off",
                 "calendar-list__numbers__item_shortened",
             ]
         )
-    result = dict()
+        for month in months
+    ]
 
-    # Filling result dictionary
+    # Get raw calendar dictionary
+    result = get_raw_calendar_dict(year=year)
+
+    # Filling raw calendar dictionary with days-off and shortened days
     for index, month in enumerate(months, start=1):
         for day in month:
             day = day.__str__()
@@ -59,3 +80,6 @@ def get_prod_calendar():
                 )
                 continue
     return result
+
+
+pprint(get_prod_calendar_dict())
