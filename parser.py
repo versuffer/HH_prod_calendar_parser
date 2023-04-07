@@ -2,7 +2,6 @@ import calendar
 import itertools
 import re
 from datetime import date
-from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup
@@ -90,6 +89,3 @@ def get_prod_calendar_dict():
                 )
                 continue
     return result
-
-
-pprint(get_prod_calendar_dict())
